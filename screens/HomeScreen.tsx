@@ -6,16 +6,27 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { AbsoluteCenter } from '@chakra-ui/react'
+import { FlatList } from 'react-native-reanimated/lib/typescript/Animated'
 
 const AVATAR_URL =
   'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+
+const CATEGORIES = [
+  'Clothing',
+  'Shoes',
+  'Accessories',
+  'Accessories 1',
+  'Accessories 3',
+  'Accessories 4',
+]
 export default function HomeScreen() {
   const { colors } = useTheme()
+  const [categoryIndex, setCategoryIndex] = useState<number>(0)
   return (
     <ScrollView>
       <SafeAreaView style={{ paddingVertical: 24, gap: 24 }}>
@@ -154,6 +165,49 @@ export default function HomeScreen() {
           <Card />
           <View style={{ flex: 1 }}></View>
         </View>
+        {/* Categories Section  */}
+        <FlatList
+          data={CATEGORIES}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: 16,
+            gap: 12,
+          }}
+          renderItem={({ item, index }) => {
+            const isSelected = categoryIndex == index
+            return (
+              <TouchableOpacity
+                onPress={() => setCategoryIndex(index)}
+                style={{
+                  backgroundColor: isSelected ? colors.primary : colors.card,
+                  paddingHorizontal: 24,
+                  paddingVertical: 16,
+                  borderRadius: 100,
+                  borderWidth: isSelected ? 0 : 1,
+                  borderColor: colors.border,
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: isSelected ? colors.primary : colors.card,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: isSelected ? colors.background : colors.text,
+                      fontWeight: '600',
+                      fontSize: 16,
+                      opacity: isSelected ? 1 : 0.5,
+                    }}
+                  >
+                    {item}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )
+          }}
+        />
       </SafeAreaView>
     </ScrollView>
   )
