@@ -8,6 +8,9 @@ import {
 } from '@react-navigation/native'
 import { useMemo } from 'react'
 import { background } from '@chakra-ui/react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export default function App() {
   const theme: Theme = useMemo(
@@ -24,12 +27,18 @@ export default function App() {
     []
   )
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <RootNavigator />
-        <StatusBar style='dark' />
-      </NavigationContainer>
-    </View>
+    <SafeAreaProvider style={{ flex: 1 }}>
+      <GestureHandlerRootView style={styles.container}>
+        <View style={styles.container}>
+          <NavigationContainer>
+            <BottomSheetModalProvider>
+              <RootNavigator />
+            </BottomSheetModalProvider>
+            <StatusBar style='dark' />
+          </NavigationContainer>
+        </View>
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   )
 }
 
